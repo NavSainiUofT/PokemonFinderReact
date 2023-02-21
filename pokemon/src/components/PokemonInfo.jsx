@@ -1,9 +1,10 @@
-
+import './components.css'
 function PokemonInfo({ pokemonInfo }) {
     return (
         <>
             <div className="container">
-            <div className="card" style={{ width: "18rem" }}>
+                <div className='d-flex flex-row'>
+            <div className="card centerAll" style={{ width: "18rem" }}>
                 <img className="card-img-top" src={pokemonInfo.imgUrl} alt="Card image cap"></img>
                 <div className="card-body">
                     <h5 className="card-title">{pokemonInfo.name[0].toUpperCase() + pokemonInfo.name.slice(1)}</h5>
@@ -17,10 +18,13 @@ function PokemonInfo({ pokemonInfo }) {
 
                 </ul>
             </div>
+            <div>
+                Testing
             </div>
-            <div className="container-fluid">
-                <h1>Base Stats:</h1>
+            </div>
+                
                 <div className="container mb-2">
+                <h1>Base Stats:</h1>
                     <div className="progress mb-2" role="progressbar" aria-label="Success striped example">
                         <div className="progress-bar bg-success" style={{ width: String((pokemonInfo.baseStats.hp / 255) * 100) + "%" }}>
                             HP: {pokemonInfo.baseStats.hp}

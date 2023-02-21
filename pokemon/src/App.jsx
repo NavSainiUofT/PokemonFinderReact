@@ -7,7 +7,7 @@ import PokemonInfo from './components/PokemonInfo'
 function App() {
   const [searchVal, setSearchVal] = useState("")
   const [showInfo, setShowInfo] = useState(false)
-  const [pokemonInfo, setPokemonInfo] = useState({})
+  const [pokemonInfo, setPokemonInfo] = useState()
 
   //pokemon data states
   const [pokemonName, setPokemonName] = useState("")
@@ -17,12 +17,12 @@ function App() {
   const [pokemonBaseStats, setPokemonBaseStats] = useState({})
 
   //when user looks up a new pokemon, pokemonInfo state changes and all the variables update
-  useEffect(() => {
+  const updatePokemon = ()=>{
     try {
       setPokemonName(pokemonInfo.name)
       setPokemonHeight(pokemonInfo.height)
       setPokemonImgUrl(pokemonInfo.sprites.other["official-artwork"].front_default)
-      setPokemonGameIndex(pokemonInfo.game_indices[19].game_index)
+      setPokemonGameIndex(pokemonInfo.game_indices[0].game_index)
       setPokemonBaseStats(
       {"hp":pokemonInfo.stats[0].base_stat,
       "attack":pokemonInfo.stats[1].base_stat,
@@ -30,13 +30,16 @@ function App() {
       "specialAttack":pokemonInfo.stats[3].base_stat,
       "specialDefense":pokemonInfo.stats[4].base_stat,
       "speed":pokemonInfo.stats[5].base_stat})
+      
 
       setShowInfo(true)
     }
     catch {
       (e) => console.log(e.message.log())
-    }
-
+    }}
+  
+  useEffect(() => {
+    updatePokemon();
   }, [pokemonInfo])
 
   //this function calls to the api with the name of the pokemon to retrieve the data
@@ -52,6 +55,7 @@ function App() {
   }
 
   const pokeClick = () => {
+    console.log(searchVal)
     pokeCall(searchVal)
   }
 
