@@ -8,6 +8,7 @@ function App() {
   const [searchVal, setSearchVal] = useState("")
   const [showInfo, setShowInfo] = useState(false)
   const [pokemonInfo, setPokemonInfo] = useState()
+  const [errorMessage, setErrorMessage] = useState("")
 
   //pokemon data states
   const [pokemonName, setPokemonName] = useState("")
@@ -15,6 +16,8 @@ function App() {
   const [pokemonImgUrl, setPokemonImgUrl] = useState("")
   const [pokemonGameIndex, setPokemonGameIndex] = useState("")
   const [pokemonBaseStats, setPokemonBaseStats] = useState({})
+  const [loading,setLoading] = useState(false)
+  const loadingMessage = "Loading..."
 
   //when user looks up a new pokemon, pokemonInfo state changes and all the variables update
   const updatePokemon = ()=>{
@@ -46,17 +49,26 @@ function App() {
   //the async call is used to ensure the data is recieved while other app wide tasks occur
   const pokeCall = async (name) => {
     try{
+      setLoading(true)
     await fetch("https://pokeapi.co/api/v2/pokemon/" + name)
       .then(res => res.json())
       .then(data => {
+        setLoading(false)
+        setErrorMessage("")
         setPokemonInfo(data)
       })}
-      catch{(e)=>e.message.log()}
+      catch{
+        (e)=>e.message.log()
+        setLoading(false)
+        setShowInfo(false)
+        setErrorMessage("Pokemon Does not Exist :(")
+      }
   }
 
   const pokeClick = () => {
     console.log(searchVal)
-    pokeCall(searchVal)
+    if (searchVal){
+    pokeCall(searchVal)}
   }
 
   return (
@@ -70,7 +82,10 @@ function App() {
           }}></input>
 
           <button className='btn btn-warning mr-4' onClick={() => { pokeClick() }}>Search</button>
+          
         </div>
+        {loading && <h2>{loadingMessage}</h2>}
+        <h2>{errorMessage}</h2>
 
         {showInfo && <PokemonInfo pokemonInfo={
           {
